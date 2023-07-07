@@ -1,0 +1,7 @@
+{
+  "name": "English-5-Word",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue-vite"
+}
