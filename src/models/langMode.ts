@@ -21,7 +21,10 @@ export class LangMode {
     (q) => q.ja
   );
 
-  private static readonly allCases: readonly LangMode[] = [this.ja2en, this.en2ja];
+  private static readonly allCases: readonly LangMode[] = [
+    this.ja2en,
+    this.en2ja,
+  ];
 
   static of(value: string): LangMode {
     const found = this.allCases.find((mode) => mode.value === value);
