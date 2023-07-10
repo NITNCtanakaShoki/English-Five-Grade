@@ -1,7 +1,7 @@
 import { Quiz } from "@/models/quiz";
 
 export class QuizResult {
-  constructor(
+  private constructor(
     readonly quiz: Quiz,
     readonly successCount: number = 0,
     readonly failCount: number = 0
