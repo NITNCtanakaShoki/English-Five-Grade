@@ -3,7 +3,6 @@ import { QuizCollection } from "@/models/quizCollection";
 
 export const wordData = new QuizCollection([
   new Quiz("major", "主な"),
-  new Quiz("effect", "効果"),
   new Quiz("wrongly", "誤って、間違って"),
   new Quiz("imply", "暗示する"),
   new Quiz("ancestor", "祖先"),
