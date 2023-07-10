@@ -2,7 +2,7 @@ import { QuizResult } from "@/models/quizResult";
 import { Quiz } from "@/models/quiz";
 
 export class QuizResultCollection {
-  constructor(readonly values: readonly QuizResult[] = []) {}
+  constructor(private readonly values: readonly QuizResult[] = []) {}
 
   logSuccess(quiz: Quiz): QuizResultCollection {
     if (this.isExistsQuiz(quiz)) {
@@ -27,7 +27,7 @@ export class QuizResultCollection {
     return Math.floor((this.allSuccessCount / this.allTryCount) * 100);
   }
 
-  failCount(quiz: Quiz): number {
+  failCountOf(quiz: Quiz): number {
     const result = this.findByQuiz(quiz);
     if (result == null) return 0;
     return result.failCount;

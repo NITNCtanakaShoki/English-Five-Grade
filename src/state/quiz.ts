@@ -11,7 +11,7 @@ export const useQuizStore = defineStore("quiz", () => {
   const collection = ref(new QuizCollection([]));
   const quiz = computed(() => collection.value.first);
   const failCount = computed(() =>
-    quiz.value == null ? 0 : results.value.failCount(quiz.value)
+    quiz.value == null ? 0 : results.value.failCountOf(quiz.value)
   );
   const hasQuiz = computed(() => collection.value.nonEmpty);
   const results = ref(new QuizResultCollection());
@@ -36,7 +36,7 @@ export const useQuizStore = defineStore("quiz", () => {
   const allTryCount = computed(() => results.value.allTryCount);
 
   const failCountOfQuiz = computed(() =>
-    quiz.value == null ? 0 : results.value.failCount(quiz.value)
+    quiz.value == null ? 0 : results.value.failCountOf(quiz.value)
   );
 
   const successRate = computed(() => results.value.successRate);
