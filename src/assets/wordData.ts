@@ -52,7 +52,6 @@ export const wordData = new QuizCollection([
   new Quiz("completely", "完全に"),
   new Quiz("competitive", "競争力のある"),
   new Quiz("suffer", "被害にある、苦しむ"),
-  new Quiz("put into action", "〜を実行する"),
   new Quiz("determine", "決定する"),
   new Quiz("improve", "改善する、向上する"),
   new Quiz("encourage", "奨励する、勧める"),
