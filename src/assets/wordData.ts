@@ -13,7 +13,7 @@ export const wordData = new QuizCollection([
   new Quiz("opportunity", "機会"),
   new Quiz("option", "選択肢"),
   new Quiz("solution", "解決策"),
-  new Quiz("nude", "裸の"),
+  new Quiz("naked", "裸の"),
   new Quiz("exceptional", "卓越した、例外的な"),
   new Quiz("alternative", "代わりの、代案"),
   new Quiz("offer", "提供する"),
