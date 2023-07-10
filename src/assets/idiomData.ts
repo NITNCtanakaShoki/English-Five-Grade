@@ -5,7 +5,7 @@ export const idiomData = new QuizCollection([
   new Quiz("be exposed to", "〜に晒される"),
   new Quiz("pour out of 〜", "~から溢れ出る"),
   new Quiz("put on hold", "保留する"),
-  new Quiz("interaction with 人 〜", "〜誰々との交流"),
+  new Quiz("interaction with 〜", "誰々との交流"),
   new Quiz("come up with", "思いつく"),
   new Quiz("filled with", "〜で満たされた"),
   new Quiz("provided A with B", "AにBを提供する,与える"),
