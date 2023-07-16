@@ -8,21 +8,17 @@ import { QuizAnswer } from "@/models/QuizAnswer";
 export const useQuizStore = defineStore("quiz", () => {
   const setting = useSettingStore();
 
-  const collection = ref(new QuizCollection([]));
+  const collection = ref(new QuizCollection());
   const quiz = computed(() => collection.value.first);
   const failCount = computed(() =>
-    quiz.value == null ? 0 : results.value.failCountOf(quiz.value)
+    quiz.value.map((q) => results.value.failCountOf(q)).getOrElse(0)
   );
   const hasQuiz = computed(() => collection.value.nonEmpty);
   const results = ref(new QuizResultCollection());
   const quizAnswer = computed(() =>
-    quiz.value == null
-      ? null
-      : QuizAnswer.of(
-          quiz.value,
-          setting.data.selections(quiz.value),
-          setting.langMode
-        )
+    quiz.value.map((q) =>
+      QuizAnswer.of(q, setting.data.selections(q), setting.langMode)
+    )
   );
 
   const allQuizCount = computed(() => {
@@ -36,7 +32,7 @@ export const useQuizStore = defineStore("quiz", () => {
   const allTryCount = computed(() => results.value.allTryCount);
 
   const failCountOfQuiz = computed(() =>
-    quiz.value == null ? 0 : results.value.failCountOf(quiz.value)
+    quiz.value.map((q) => results.value.failCountOf(q)).getOrElse(0)
   );
 
   const successRate = computed(() => results.value.successRate);
@@ -47,19 +43,21 @@ export const useQuizStore = defineStore("quiz", () => {
   }
 
   function success(): void {
-    if (quiz.value == null) return;
-    results.value = results.value.logSuccess(quiz.value);
-    collection.value = collection.value.removeFirst;
+    quiz.value.map((q) => {
+      results.value = results.value.logSuccess(q);
+      collection.value = collection.value.removeFirst;
+    });
   }
 
   function fail(): void {
-    if (quiz.value == null) return;
-    results.value = results.value.logFail(quiz.value);
-    if (setting.isInfinite) {
-      collection.value = collection.value.moveFirstToLast;
-    } else {
-      collection.value = collection.value.removeFirst;
-    }
+    quiz.value.map((q) => {
+      results.value = results.value.logFail(q);
+      if (setting.isInfinite) {
+        collection.value = collection.value.moveFirstToLast;
+      } else {
+        collection.value = collection.value.removeFirst;
+      }
+    });
   }
 
   return {

@@ -1,56 +1,56 @@
 import { Quiz } from "@/models/quiz";
 import { at } from "ionicons/icons";
+import {
+  Codable,
+  from,
+  Optional,
+  seq,
+  Sequence,
+} from "@lemonaderoom/foundation";
 
-export class QuizCollection {
-  constructor(readonly values: readonly Quiz[]) {}
+export class QuizCollection extends Codable<QuizCollection> {
+  constructor(readonly values: Sequence<Quiz> = seq()) {
+    super();
+  }
 
-  get first(): Quiz | undefined {
+  get first(): Optional<Quiz> {
     return this.values.at(0);
   }
 
   get nonEmpty(): boolean {
-    return !this.isEmpty;
+    return this.values.nonEmpty;
   }
 
   get removeFirst(): QuizCollection {
     if (this.isEmpty) return this;
-    return this.slice(1);
+    return new QuizCollection(this.values.remove(0));
   }
 
   get moveFirstToLast(): QuizCollection {
     if (this.isEmpty) return this;
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return this.slice(1).add(this.first!);
+    return this.removeFirst.add(this.first.get);
   }
 
-  selections(quiz: Quiz): readonly Quiz[] {
+  selections(quiz: Quiz): Sequence<Quiz> {
     const randoms = this.filter((q) => q.en !== quiz.en).shuffled;
-    return new QuizCollection([quiz, ...randoms.slice(0, 3).values]).shuffled
-      .values;
+    return new QuizCollection(seq([quiz, ...randoms.slice(0, 3).values]))
+      .shuffled.values;
   }
 
   get shuffled(): QuizCollection {
-    const shuffledArray = [...this.values];
-    for (let i = shuffledArray.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffledArray[i], shuffledArray[j]] = [
-        shuffledArray[j],
-        shuffledArray[i],
-      ];
-    }
-    return new QuizCollection(shuffledArray);
+    return new QuizCollection(this.values.shuffled);
   }
 
   get count(): number {
-    return this.values.length;
+    return this.values.count;
   }
 
   private add(quiz: Quiz): QuizCollection {
-    return new QuizCollection(this.values.concat([quiz]));
+    return new QuizCollection(this.values.append(quiz));
   }
 
-  private slice(start?: number, end?: number): QuizCollection {
-    return new QuizCollection(this.values.slice(start, end));
+  private slice(start = 0, end: number = this.count): QuizCollection {
+    return new QuizCollection(this.values.slice(from(start).until(end)));
   }
 
   private filter(predicate: (quiz: Quiz) => boolean): QuizCollection {
@@ -58,6 +58,6 @@ export class QuizCollection {
   }
 
   private get isEmpty(): boolean {
-    return this.values.length === 0;
+    return this.values.isEmpty;
   }
 }

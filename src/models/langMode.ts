@@ -1,4 +1,5 @@
 import { Quiz } from "@/models/quiz";
+import { seq, Sequence } from "@lemonaderoom/foundation";
 
 export class LangMode {
   private constructor(
@@ -21,11 +22,9 @@ export class LangMode {
     (q) => q.ja
   );
 
-  static readonly allCases: readonly LangMode[] = [this.ja2en, this.en2ja];
+  static readonly allCases: Sequence<LangMode> = seq(this.ja2en, this.en2ja);
 
   static of(value: string): LangMode {
-    const found = this.allCases.find((mode) => mode.value === value);
-    if (found == null) throw new Error(`LangMode.of(${value}) is null`);
-    return found;
+    return this.allCases.find((mode) => mode.value === value).get;
   }
 }

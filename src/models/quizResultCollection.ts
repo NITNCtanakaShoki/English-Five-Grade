@@ -1,23 +1,26 @@
 import { QuizResult } from "@/models/quizResult";
 import { Quiz } from "@/models/quiz";
+import { Optional, seq, Sequence } from "@lemonaderoom/foundation";
 
 export class QuizResultCollection {
-  constructor(private readonly values: readonly QuizResult[] = []) {}
+  constructor(private readonly values: Sequence<QuizResult> = seq()) {}
 
   logSuccess(quiz: Quiz): QuizResultCollection {
     if (this.isExistsQuiz(quiz)) {
-      return new QuizResultCollection(
-        this.values.map((result) => (result.is(quiz) ? result.success : result))
+      const results = this.values.map((result) =>
+        result.is(quiz) ? result.success : result
       );
+      return new QuizResultCollection(results);
     }
     return this.add(QuizResult.success(quiz));
   }
 
   logFail(quiz: Quiz): QuizResultCollection {
     if (this.isExistsQuiz(quiz)) {
-      return new QuizResultCollection(
-        this.values.map((result) => (result.is(quiz) ? result.fail : result))
+      const results = this.values.map((result) =>
+        result.is(quiz) ? result.fail : result
       );
+      return new QuizResultCollection(results);
     }
     return this.add(QuizResult.fail(quiz));
   }
@@ -28,35 +31,32 @@ export class QuizResultCollection {
   }
 
   failCountOf(quiz: Quiz): number {
-    const result = this.findByQuiz(quiz);
-    if (result == null) return 0;
-    return result.failCount;
+    return this.findByQuiz(quiz)
+      .map((result) => result.failCount)
+      .getOrElse(0);
   }
 
   get allTryCount(): number {
-    return this.values.reduce(
-      (sum, result) => sum + result.successCount + result.failCount,
-      0
-    );
+    return this.values.reduce(0, (sum, result) => sum + result.tryCount);
   }
 
   get allSuccessCount(): number {
-    return this.values.reduce((sum, result) => sum + result.successCount, 0);
+    return this.values.reduce(0, (sum, result) => sum + result.successCount);
   }
 
   get allFailCount(): number {
-    return this.values.reduce((sum, result) => sum + result.failCount, 0);
+    return this.values.reduce(0, (sum, result) => sum + result.failCount);
   }
 
   private add(result: QuizResult): QuizResultCollection {
-    return new QuizResultCollection(this.values.concat([result]));
+    return new QuizResultCollection(this.values.append(result));
   }
 
   private isExistsQuiz(quiz: Quiz): boolean {
-    return this.findByQuiz(quiz) != null;
+    return this.findByQuiz(quiz).isDefined;
   }
 
-  private findByQuiz(quiz: Quiz): QuizResult | undefined {
+  private findByQuiz(quiz: Quiz): Optional<QuizResult> {
     return this.values.find((result) => result.is(quiz));
   }
 }

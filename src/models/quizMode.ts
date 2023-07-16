@@ -1,6 +1,7 @@
 import { QuizCollection } from "@/models/quizCollection";
 import { wordData } from "@/assets/wordData";
 import { idiomData } from "@/assets/idiomData";
+import { seq, Sequence } from "@lemonaderoom/foundation";
 
 export class QuizMode {
   private constructor(
@@ -12,11 +13,9 @@ export class QuizMode {
   static readonly word = new QuizMode("単語", "word", wordData);
   static readonly idiom = new QuizMode("イディオム", "idiom", idiomData);
 
-  static readonly allCases: readonly QuizMode[] = [this.word, this.idiom];
+  static readonly allCases: Sequence<QuizMode> = seq(this.word, this.idiom);
 
   static of(value: string): QuizMode {
-    const found = this.allCases.find((mode) => mode.value === value);
-    if (found == null) throw new Error(`LangMode.of(${value}) is null`);
-    return found;
+    return this.allCases.find((mode) => mode.value === value).get;
   }
 }
