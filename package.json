@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "test:e2e": "cypress run",
     "test:unit": "vitest",
-    "lint": "eslint"
+    "lint": "eslint",
+    "format": "npx prettier --write ./src"
   },
   "dependencies": {
     "@capacitor/app": "5.0.5",
@@ -19,6 +20,7 @@
     "@capacitor/status-bar": "5.0.5",
     "@ionic/vue": "^7.0.0",
     "@ionic/vue-router": "^7.0.0",
+    "@lemonaderoom/foundation": "^0.0.28",
     "ionicons": "^7.0.0",
     "pinia": "^2.1.4",
     "sass": "^1.63.6",

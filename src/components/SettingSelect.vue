@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { IonSelect, IonSelectOption, IonIcon } from "@ionic/vue";
 import { PropType } from "vue";
+import { Sequence } from "@lemonaderoom/foundation";
 
 export interface SelectOption {
   label: string;
@@ -9,7 +10,7 @@ export interface SelectOption {
 
 defineProps({
   options: {
-    type: Array as PropType<readonly SelectOption[]>,
+    type: Object as PropType<Sequence<SelectOption>>,
     required: true,
   },
   modelValue: {

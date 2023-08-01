@@ -1,6 +1,9 @@
 import { QuizCollection } from "@/models/quizCollection";
 import { wordData } from "@/assets/wordData";
 import { idiomData } from "@/assets/idiomData";
+import { seq, Sequence } from "@lemonaderoom/foundation";
+import { additionalWordData } from "@/assets/additional_wordData";
+import { additionalIdiomData } from "@/assets/additional_idiomData";
 
 export class QuizMode {
   private constructor(
@@ -9,14 +12,35 @@ export class QuizMode {
     readonly data: QuizCollection
   ) {}
 
-  static readonly word = new QuizMode("単語", "word", wordData);
-  static readonly idiom = new QuizMode("イディオム", "idiom", idiomData);
+  static readonly word = new QuizMode(
+    "単語",
+    "word",
+    wordData.concat(additionalWordData)
+  );
+  static readonly idiom = new QuizMode(
+    "イディオム",
+    "idiom",
+    idiomData.concat(additionalIdiomData)
+  );
+  static readonly additionalWord = new QuizMode(
+    "追加された単語",
+    "additional_word",
+    additionalWordData
+  );
+  static readonly additionalIdiom = new QuizMode(
+    "追加されたイディオム",
+    "additional_idiom",
+    additionalIdiomData
+  );
 
-  static readonly allCases: readonly QuizMode[] = [this.word, this.idiom];
+  static readonly allCases: Sequence<QuizMode> = seq(
+    this.word,
+    this.idiom,
+    this.additionalWord,
+    this.additionalIdiom
+  );
 
   static of(value: string): QuizMode {
-    const found = this.allCases.find((mode) => mode.value === value);
-    if (found == null) throw new Error(`LangMode.of(${value}) is null`);
-    return found;
+    return this.allCases.find((mode) => mode.value === value).get;
   }
 }

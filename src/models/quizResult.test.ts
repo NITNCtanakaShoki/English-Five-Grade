@@ -21,6 +21,13 @@ describe("QuizCollection", () => {
     expect(actual.successCount).toBe(1);
   });
 
+  test("試行回数", () => {
+    const quiz = new Quiz("hello", "こんにちは");
+    const sut = QuizResult.success(quiz).fail.success.fail;
+
+    expect(sut.tryCount).toBe(4);
+  });
+
   test("同じquizとisで比較するとtrueを返す", () => {
     const quiz = new Quiz("hello", "こんにちは");
     const sut = QuizResult.success(quiz);

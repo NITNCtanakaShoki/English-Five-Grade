@@ -23,7 +23,7 @@ function onAnswer(event: CustomEvent) {
 
 function classes(selection: string): readonly string[] {
   if (answer.value === null) return [];
-  if (selection === quizAnswer.value.answer) {
+  if (selection === quizAnswer.value.value?.answer) {
     return ["success"];
   }
   if (selection === answer.value) {
@@ -33,7 +33,7 @@ function classes(selection: string): readonly string[] {
 }
 
 function next(): void {
-  if (answer.value === quizAnswer.value.answer) {
+  if (answer.value === quizAnswer.value.value?.answer) {
     quiz.success();
   } else {
     quiz.fail();
@@ -51,10 +51,13 @@ function next(): void {
     </div>
     <div class="space" />
     <div class="quiz" v-if="quiz.hasQuiz">
-      <h2>問題: {{ quizAnswer.quiz }}</h2>
+      <h2>問題: {{ quizAnswer.get.quiz }}</h2>
       <div class="space" />
       <ion-radio-group :value="null" @ionChange="onAnswer">
-        <ion-item v-for="selection in quizAnswer.selections" :key="selection">
+        <ion-item
+          v-for="selection in quizAnswer.get.selections"
+          :key="selection"
+        >
           <ion-radio :value="selection" justify="space-between">
             <div :class="classes(selection)">{{ selection }}</div>
           </ion-radio>
