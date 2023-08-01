@@ -31,9 +31,13 @@ export const useQuizStore = defineStore("quiz", () => {
 
   const allTryCount = computed(() => results.value.allTryCount);
 
-  const failCountOfQuiz = computed(() =>
-    quiz.value.map((q) => results.value.failCountOf(q)).getOrElse(0)
-  );
+  const failCountOfQuiz = computed(() => {
+    if (setting.isInfinite) {
+      return quiz.value.map((q) => results.value.failCountOf(q)).getOrElse(0);
+    } else {
+      return results.value.allFailCount;
+    }
+  });
 
   const successRate = computed(() => results.value.successRate);
 
