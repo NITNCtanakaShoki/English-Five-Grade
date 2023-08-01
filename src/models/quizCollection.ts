@@ -1,5 +1,4 @@
 import { Quiz } from "@/models/quiz";
-import { at } from "ionicons/icons";
 import {
   Codable,
   from,
@@ -43,6 +42,10 @@ export class QuizCollection extends Codable<QuizCollection> {
 
   get count(): number {
     return this.values.count;
+  }
+
+  concat(other: QuizCollection): QuizCollection {
+    return new QuizCollection(this.values.concat(other.values));
   }
 
   private add(quiz: Quiz): QuizCollection {
