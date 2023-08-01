@@ -17,7 +17,7 @@ export const useQuizStore = defineStore("quiz", () => {
   const results = ref(new QuizResultCollection());
   const quizAnswer = computed(() =>
     quiz.value.map((q) =>
-      QuizAnswer.of(q, setting.data.selections(q), setting.langMode)
+      QuizAnswer.of(q, setting.allData.selections(q), setting.langMode)
     )
   );
 
