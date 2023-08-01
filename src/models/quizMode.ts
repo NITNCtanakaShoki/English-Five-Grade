@@ -9,28 +9,33 @@ export class QuizMode {
   private constructor(
     readonly label: string,
     readonly value: string,
-    readonly data: QuizCollection
+    readonly data: QuizCollection,
+    readonly allData: QuizCollection
   ) {}
 
   static readonly word = new QuizMode(
     "単語",
     "word",
+    wordData.concat(additionalWordData),
     wordData.concat(additionalWordData)
   );
   static readonly idiom = new QuizMode(
     "イディオム",
     "idiom",
+    idiomData.concat(additionalIdiomData),
     idiomData.concat(additionalIdiomData)
   );
   static readonly additionalWord = new QuizMode(
     "追加された単語",
     "additional_word",
-    additionalWordData
+    additionalWordData,
+    wordData.concat(additionalWordData)
   );
   static readonly additionalIdiom = new QuizMode(
     "追加されたイディオム",
     "additional_idiom",
-    additionalIdiomData
+    additionalIdiomData,
+    idiomData.concat(additionalIdiomData)
   );
 
   static readonly allCases: Sequence<QuizMode> = seq(
